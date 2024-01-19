@@ -12,6 +12,7 @@ class Userserializers(serializers.ModelSerializer):
          return User.objects.create_user(**validated_data)
     
 class ProductSerializers(serializers.ModelSerializer):
+     category=serializers.StringRelatedField()
      class Meta:
        model=Product
        fields="__all__"
