@@ -3,15 +3,17 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework import authentication,permissions
+from rest_framework.decorators import action
 
-from store.serializers import Userserializers,ProductSerializers
+from store.serializers import Userserializers,ProductSerializers,BasketItemserializers
 from store.models import Product
 
 # Create your views here.
 
 class SignUpview(APIView):
-    def   post(self,requset,*args,**kwargs):
-        serializers=Userserializers(data=requset.data)
+    def   post(self,request,*args,**kwargs):
+        serializers=Userserializers(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(data=serializers.data)
@@ -22,3 +24,20 @@ class SignUpview(APIView):
 class ProductView(viewsets.ModelViewSet):
        serializer_class=ProductSerializers
        queryset=Product.objects.all()
+       authentication_classes=[authentication.TokenAuthentication]
+       permission_classes=[permissions.IsAuthenticatedOrReadOnly]
+
+    # url:http://127.0.0.1:8000/api/products/{id}/add_to_basket/
+       
+       @action(methods=["post"],detail=True)
+       def add_to_basket(self,request,*args,**kwargs):
+           id=kwargs.get("pk")
+           product_object=Product.objects.get(id=id)
+           basket_object=request.user.cart
+
+           serializers=BasketItemserializers(data=request.data)
+           if serializers.is_valid():
+              serializers.save(basket=basket_object,product=product_object)
+              return Response(data=serializers.data)
+           else:
+              return Response(data=serializers.errors) 
