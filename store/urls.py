@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 routers=DefaultRouter()
 routers.register("products",views.ProductView,basename="products")
+routers.register("baskets",views.BasketView,basename="baskets")
 
 urlpatterns = [
     path("register/",views.SignUpview.as_view()),

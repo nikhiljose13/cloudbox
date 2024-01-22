@@ -32,3 +32,10 @@
     method:post
     data:{qty}
     authorization:Token
+
+6.list basket item of authenticated user with number of items in theire basket
+
+    url:http://127.0.0.1:8000/api/baskets/
+    method:get
+    data:nill
+    authorization:Token

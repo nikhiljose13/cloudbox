@@ -7,7 +7,7 @@ from rest_framework import authentication,permissions
 from rest_framework.decorators import action
 from rest_framework import serializers
 
-from store.serializers import Userserializers,ProductSerializers,BasketItemserializers
+from store.serializers import Userserializers,ProductSerializers,BasketItemserializers,Basketserializers
 from store.models import Product
 
 
@@ -52,3 +52,14 @@ class ProductView(viewsets.ModelViewSet):
        
        def destroy(self, request, *args, **kwargs):
              raise serializers.ValidationError("permission denied")
+       
+
+class BasketView(viewsets.ViewSet):
+     authentication_classes=[authentication.TokenAuthentication]
+     permission_classes=[permissions.IsAuthenticated]
+
+     def list(self, request, *args, **kwargs):
+         qs= request.user.cart 
+         serializers=Basketserializers(qs)
+         return Response(serializers.data)
+          
