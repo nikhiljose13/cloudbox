@@ -18,6 +18,7 @@ class ProductSerializers(serializers.ModelSerializer):
        fields="__all__"
 
 class BasketItemserializers(serializers.ModelSerializer):
+     product=ProductSerializers(read_only=True)
      class Meta:
        model=BasketItem
        fields="__all__"
