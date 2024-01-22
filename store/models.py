@@ -36,6 +36,11 @@ class Basket(models.Model):
     def cart_items(self):
          return self.cartitem.all()
     
+    @property
+    def cart_item_quanity(self):
+         qs=self.cart_items
+         return len(qs)
+
 class BasketItem(models.Model):
     basket=models.ForeignKey(Basket,on_delete=models.CASCADE,related_name="cartitem")
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
