@@ -5,9 +5,11 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import authentication,permissions
 from rest_framework.decorators import action
+from rest_framework import serializers
 
 from store.serializers import Userserializers,ProductSerializers,BasketItemserializers
 from store.models import Product
+
 
 # Create your views here.
 
@@ -41,3 +43,12 @@ class ProductView(viewsets.ModelViewSet):
               return Response(data=serializers.data)
            else:
               return Response(data=serializers.errors) 
+         
+       def create(self, request, *args, **kwargs):
+             raise serializers.ValidationError("permission denied")
+       
+       def update(self, request, *args, **kwargs):
+             raise serializers.ValidationError("permission denied")
+       
+       def destroy(self, request, *args, **kwargs):
+             raise serializers.ValidationError("permission denied")
