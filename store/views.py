@@ -8,7 +8,8 @@ from rest_framework.decorators import action
 from rest_framework import serializers
 
 from store.serializers import Userserializers,ProductSerializers,BasketItemserializers,Basketserializers
-from store.models import Product
+from store.models import Product,BasketItem
+
 
 
 # Create your views here.
@@ -63,3 +64,14 @@ class BasketView(viewsets.ViewSet):
          serializers=Basketserializers(qs)
          return Response(serializers.data)
           
+class BasketItemView(viewsets.ModelViewSet):
+     serializer_class=BasketItemserializers
+     queryset=BasketItem.objects.all()
+     authentication_classes=[authentication.TokenAuthentication]
+     permission_classes=[permissions.IsAuthenticated]
+
+     def create(self, request, *args, **kwargs):
+             raise serializers.ValidationError("permission denied")
+     
+     def list(self, request, *args, **kwargs):
+             raise serializers.ValidationError("permission denied")

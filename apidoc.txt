@@ -39,3 +39,24 @@
     method:get
     data:nill
     authorization:Token
+
+7. api for fetching a basketitemdetail
+
+    url: http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:get
+    data nill
+    authorization-token
+
+8. api for updating basketitem 
+
+    url: http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:put
+    data qty
+    authorization-token
+
+9. delete /remove an item(from cart/basket item)
+
+    url: http://127.0.0.1:8000/api/baskets/item/{id}/
+    method:delete
+    data :nill
+    authorization-token

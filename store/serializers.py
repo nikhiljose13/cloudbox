@@ -19,16 +19,20 @@ class ProductSerializers(serializers.ModelSerializer):
 
 class BasketItemserializers(serializers.ModelSerializer):
      product=ProductSerializers(read_only=True)
+     total=serializers.IntegerField(read_only=True)
+     
      class Meta:
        model=BasketItem
        fields="__all__"
-       read_only_fields=["id","product","basket","created_at","updated_at","is_active"]
+       read_only_fields=["id","product","basket","created_at","updated_at","is_active","total"]
 
 class Basketserializers(serializers.ModelSerializer):
      cart_items=BasketItemserializers(read_only=True,many=True)
+     cart_item_quanity=serializers.CharField(read_only=True)
+     sub_total=serializers.IntegerField(read_only=True)
      class Meta:
         model=Basket
-        fields=["id","owner","created_at","updated_at","is_active","cart_items"]
+        fields=["id","owner","created_at","updated_at","is_active","cart_items","cart_item_quanity","sub_total"]
 
 
    

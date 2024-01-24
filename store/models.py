@@ -39,7 +39,14 @@ class Basket(models.Model):
     @property
     def cart_item_quanity(self):
          qs=self.cart_items
-         return len(qs)
+         return qs.count
+    @property
+    def sub_total(self):
+        basket_items=self.cart_items
+        total_sum=0
+        if basket_items:
+            total_sum=sum([p.total  for p in basket_items])
+        return total_sum
 
 class BasketItem(models.Model):
     basket=models.ForeignKey(Basket,on_delete=models.CASCADE,related_name="cartitem")
@@ -49,7 +56,12 @@ class BasketItem(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
 
+    @property
+    def total(self):
+       return self.quantity*self.product.price
+
 def create_basket(sender,instance,created,**kwargs):
         if created:
             Basket.objects.create(owner=instance)
 post_save.connect(create_basket,sender=User)
+
