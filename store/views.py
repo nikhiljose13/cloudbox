@@ -70,8 +70,27 @@ class BasketItemView(viewsets.ModelViewSet):
      authentication_classes=[authentication.TokenAuthentication]
      permission_classes=[permissions.IsAuthenticated]
 
+
+     def perform_update(self, serializer):
+          user=self.request.user
+          owner=self.get_object().basket.owner
+          if user==owner :
+           return super().perform_update(serializer)
+          else :
+               raise serializers.ValidationError("permission denied")
+          
+     def perform_destroy(self, instance):
+          user=self.request.user
+          owner=self.get_object().basket.owner
+          if user==owner :
+           return super().perform_destroy(instance)
+          else :
+               raise serializers.ValidationError("permission denied")
+     
      def create(self, request, *args, **kwargs):
              raise serializers.ValidationError("permission denied")
      
      def list(self, request, *args, **kwargs):
              raise serializers.ValidationError("permission denied")
+     
+     
