@@ -38,6 +38,17 @@ class ProductView(viewsets.ModelViewSet):
            product_object=Product.objects.get(id=id)
            basket_object=request.user.cart
 
+           basket_products=request.user.cart.cartitem.all().values_list("product",flat=True)
+           print(basket_products)
+           if int(id) in basket_products:
+                Basket_Item_object=BasketItem.objects.get(basket=basket_object,product__id=id)
+                Basket_Item_object.quantity=Basket_Item_object.quantity+int(request.data.get("quantity",1))
+                Basket_Item_object.save()
+                serializers=BasketItemserializers(Basket_Item_object)
+                return Response(data=serializers.data)
+
+
+
            serializers=BasketItemserializers(data=request.data)
            if serializers.is_valid():
               serializers.save(basket=basket_object,product=product_object)
